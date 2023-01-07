@@ -1,0 +1,11 @@
+%
+% created by gylai on Jan 5, 2022
+%
+
+function pop=CalcPreference(pop,reference_point)
+        num_pop=numel(pop);
+        for i=1:num_pop
+            
+            pop(i).Preference=;
+        end
+end

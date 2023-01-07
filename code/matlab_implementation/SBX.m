@@ -1,0 +1,63 @@
+% do crossover to calculate the decison variables
+function [y1,y2]=SBX(x1,x2)
+    x_lowerbound=0;
+    x_upperbound=1;
+    nDecision=numel(x1);
+    crossover_pro=1.0;
+    eta_c=20.0;
+    if rand(1)<crossover_pro
+        for i=1:nDecision
+            if rand(1)<0.5
+                if abs(x1(i)-x2(i))>1e-9
+                    x_larger=max(x1(i),x2(i));
+                    x_smaller=min(x1(i),x2(i));
+                    beta = 1.0 + (2.0 * (x_smaller - x_lowerbound) / (x_larger - x_smaller));
+					alpha = 2.0 - power(beta, -(eta_c + 1.0));
+                    rand_real_num=rand(1);
+                    if rand_real_num<1.0/alpha
+                        betaq = power((rand_real_num * alpha), (1.0 / (eta_c + 1.0)));
+                    else
+                        betaq = power((1.0 / (2.0 - rand_real_num * alpha)), (1.0 / (eta_c + 1.0)));
+                    end
+                    c1 = 0.5 * ((x_smaller + x_larger) - betaq * (x_larger - x_smaller));
+                    
+                    beta = 1.0 + (2.0 * (x_upperbound - x_larger) / (x_larger - x_smaller));
+					alpha = 2.0 - power(beta, -(eta_c + 1.0));
+                    if rand_real_num<1.0/alpha
+                        betaq = power((rand_real_num * alpha), (1.0 / (eta_c + 1.0)));
+                    else
+                        betaq = power((1.0 / (2.0 - rand_real_num * alpha)), (1.0 / (eta_c + 1.0)));
+                    end
+                    c2 = 0.5 * ((x_smaller + x_larger) + betaq * (x_larger - x_smaller));
+                    
+                    if c1<x_lowerbound || c1>x_upperbound
+                        c1=rand(1);
+                    end
+                    if c2<x_lowerbound || c2>x_upperbound
+                        c2=rand(1);
+                    end
+                    
+                    if rand(1)<0.5
+                        y1(i)=c1;
+                        y2(i)=c2;
+                    else
+                        y1(i)=c2;
+                        y2(i)=c1;
+                    end
+                    
+                else
+                    y1(i)=x1(i);
+                    y2(i)=x2(i);
+                end
+            else
+                y1(i)=x1(i);
+                y2(i)=x2(i);
+            end
+        end
+        
+    else
+        y1=x1;
+        y2=x2;
+    end
+
+end
