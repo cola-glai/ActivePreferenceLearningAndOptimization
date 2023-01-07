@@ -38,9 +38,10 @@ int main(void)
     // generate the random reference point
     mat w_star(1, d, fill::randu);
 
-    active_ranking(X, w_star);
+    // active_ranking(X, w_star);
 
     test_compare_sort();
+    test_linear_program_solver();
 
     return 0;
 }
@@ -175,10 +176,8 @@ void active_ranking(mat X, mat w_star)
             }
 
             get_undefined_preference(Qh, hi, jj, goodInds);
-
         }
     }
-
 }
 
 void build_hyperplanes(mat X, cube &H)
@@ -242,7 +241,6 @@ uvec get_toSort(uvec goodInds)
 
 uvec compare_sort(uvec goodInds, Mat<int> Qhyp)
 {
-    int ncmp = 0;
     uvec input = linspace<uvec>(0, sum(goodInds) - 1, sum(goodInds));
     cout<<"input: "<<input<<endl;
 
@@ -353,14 +351,44 @@ void quicksort_handle(Mat<int> cmp, uvec &index, int l, int r)
     quicksort_handle(cmp, index, i, r);
 }
 
-pair<uvec, double> linear_program_solver(mat X, Mat<int> y)
+pair<uvec, double> linear_program_solver(mat X, Mat<int> Y)
 {
+    uword l = X.n_rows;
+    uword d = X.n_cols;
+    mat h = X % repmat(Y, 1, d);
+
+    mat A = join_cols(h, -h, ones(l, 1));
+    A = -A;
+    mat b = ones(l, 1);
+    b = -b;
+    mat tmp1 = {1};
+    mat f = join_vert(zeros(2 * d, 1), tmp1);
+    mat tmp2 = {-1};
+    mat LB = join_vert(zeros(2 * d, 1), tmp2);
+    mat UB(2 *d + 1, 1);
+    UB.fill(datum::inf);
+
+
+
 
 }
 
 void test_linear_program_solver()
 {
-    
+    mat X = {{0.5617, 0.5006, -0.6587},
+             {0.5558, 0.5616, -0.6129},
+             {-0.5634, -0.3678, 0.7398},
+             {-0.8803, 0.2895, 0.3758},
+             {-0.2467, 0.9161, -0.3160},
+             {-0.9206, 0.3607, 0.1498}};
+    Mat<int> Y = ones<Mat<int>>(6, 1);
+    Y(2, 0) = -1;
+    Y(3, 0) = -1;
+    Y(4, 0) = -1;
+    cout<<"Y: "<<Y<<endl;
+    pair<uvec, double> res = linear_program_solver(X, Y);
+    cout<<"linear solve res: "<<res.first<<endl;
+    cout<<"acc: "<<res.second<<endl;
 }
 
 bool preference_function(vec obj1, vec obj2, vec w_star)

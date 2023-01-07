@@ -7,6 +7,9 @@ if nargin>2 && append
     x = [x ones(size(x,1),1)];
 end
 
+x
+y
+
 % add by gylai
 % d == [origin dimension] + 1
 [l,d]=size(x);
@@ -69,6 +72,8 @@ w = u(1:d)-u(d+1:2*d);
 % x*w;
 % y;
 acc = sum( sign(x*w)==y )/length(y)*100;
+w
+acc
 
 % uncommment by gylai
 % disp(['Solution=' num2str(fval,'%1.3g') '     Accuracy=' num2str(acc,'%1.3g') '     Training data Size=' num2str(l) '     Time=' num2str(time)])
