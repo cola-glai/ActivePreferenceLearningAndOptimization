@@ -54,6 +54,7 @@ problem.options = optimset('display','off','tolfun',1e-8);
 [u, fval, flag ] = linprog(problem);
 
 if isempty(u)
+    disp('set tolfun as 1e-1');
     problem.options = optimset('display','off','tolfun',1e-1);
     [u, fval, flag ] = linprog(problem);
 end
@@ -61,6 +62,7 @@ end
 % disp(size(u));
 % add by gylai
 % FIXME
+u
 w = u(1:d)-u(d+1:2*d);
 % w = [ u(1); u(2:d+1)-u(d+2:2*d+1)]; 
 % add by gylai

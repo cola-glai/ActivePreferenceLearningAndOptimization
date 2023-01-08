@@ -12,5 +12,7 @@
 
 #include <armadillo>
 
+#include "lp_lib.h"
+
 
 #endif //CPP_IMPLEMENTATION_BASE_H

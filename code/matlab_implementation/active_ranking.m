@@ -110,7 +110,6 @@ while jj < n
     % number of undefined preference relations in Qh
     goodInds = ( Qh( hi(jj), hi(1:jj-1) ) )==0;
     goodInds
-    a = input('in:');
     
     while sum(goodInds)>0
         % add by gylai
@@ -127,11 +126,11 @@ while jj < n
         % 
         list = toSort(index)
         
-        bis = floor((length(list)+1)/2);
+        bis = floor((length(list)+1)/2)
         ii = list(bis);
-        above = list(bis+1:end);
-        below = list(1:bis-1);
-        
+        above = list(bis+1:end)
+        below = list(1:bis-1)
+        a = input('in:');
         % add by gylai
         % judge the preference relation between object {i} & object {j}
         i = hi(ii);
